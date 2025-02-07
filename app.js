@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import passport from "passport";
@@ -8,6 +9,7 @@ import { authenticationRoutes } from "./routes/authenticationRoutes.js";
 import { homeRoutes } from "./routes/homeRoutes.js";
 import { initialize } from "./controllers/passport-config.js";
 
+dotenv.config();
 
 const app = express();
 const PORT = 5000;
@@ -22,7 +24,7 @@ app.use(methodOverride('_method', ))
 app.use(flash());
 app.use(session({
 
-    secret: "HELLO_WORLD!284655",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
 }));

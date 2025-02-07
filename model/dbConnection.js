@@ -1,11 +1,14 @@
 import pg from "pg";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const db = new pg.Client({
 
-    user: 'avnadmin',        
-    host: 'al-projects-villegasalrandolph-2846.l.aivencloud.com',
-    database: 'defaultdb',
-    password: 'AVNS_JgjDu2yklwLe2qnOdaq',
+    user: process.env.USER,        
+    host: process.env.HOST,
+    database: process.env.DATABASE,
+    password: process.env.PASSWORD,
     port: 13192,
     ssl: {
         rejectUnauthorized: false,
