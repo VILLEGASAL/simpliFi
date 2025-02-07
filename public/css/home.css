@@ -16,7 +16,7 @@ body {
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .header h1 {
@@ -39,20 +39,22 @@ body {
 /* Balance Section */
 .balance-wrapper {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 10px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 8px;
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .box {
-    flex: 1;
-    padding: 10px;
+    flex: 1 1 0;
+    padding: 10px 5px;
     border-radius: 5px;
     color: white;
     font-weight: bold;
     text-align: center;
-    min-width: 120px;
+    min-width: 90px;
+    max-width: 150px;
 }
 
 .balance { background: #4CAF50; }
@@ -172,20 +174,84 @@ input, select {
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        min-width: unset;
+        padding: 15px 10px;
+    }
+
     .balance-wrapper {
-        flex-direction: column;
+        gap: 5px;
     }
-    .transaction-table {
+
+    .box {
+        padding: 8px 3px;
         font-size: 12px;
+        min-width: 80px;
     }
-    .transaction-table th, .transaction-table td {
+
+    .header h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .form-box {
+        padding: 12px;
+    }
+
+    input, select {
         padding: 8px;
+        font-size: 16px; /* Better for mobile touch */
+    }
+
+    .btn {
+        padding: 10px;
+        font-size: 14px;
     }
 }
 
 @media (max-width: 480px) {
+    .transaction-table {
+        font-size: 12px;
+    }
+
+    .transaction-table th, 
+    .transaction-table td {
+        padding: 6px 4px;
+    }
+
+    .delete-btn {
+        font-size: 16px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+
+    .error-msg {
+        font-size: 13px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 360px) {
+    body {
+        padding: 5px;
+    }
+
     .container {
-        padding: 15px;
+        padding: 10px;
+    }
+
+    .transaction-table {
+        font-size: 11px;
     }
 }
