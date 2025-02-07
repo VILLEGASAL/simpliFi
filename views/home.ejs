@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Tracker</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Welcome Message -->
+        <div class="header">
+            <h1>WELCOME <%= locals.userName %></h1>
+        </div>
+
+        <!-- Error Message will appear if the trnsaction type is expense and the inputted amount is larger than the user's balance. -->
+        <% if (typeof error !== 'undefined' && error) { %>
+
+            <div id="error-msg" class="error-msg">
+                <%= error %>
+            </div>
+
+        <% } %>
+
+        <!-- Balance Overview -->
+        <div class="balance-wrapper">
+            <div class="box balance">
+                <h4>Balance</h4>
+                <h2>₱<%= locals.balance %></h2>
+            </div>
+            <div class="box income">
+                <h4>Income</h4>
+                <h2>₱<%= locals.income %></h2>
+            </div>
+            <div class="box expense">
+                <h4>Expense</h4>
+                <h2>₱<%= locals.expense %></h2>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="transaction-container">
+            <h4>Transactions</h4>
+            <div style="overflow-x: auto;">
+                <table class="transaction-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(locals.transactions){ %>
+                            <% transactions.forEach(transaction => { %>
+                                <tr>
+                                    <td class="<%= transaction.transaction_type === 'income' ? 'income-text' : 'expense-text' %>">
+                                        <%= transaction.transaction_type %>
+                                    </td>
+                                    <td><%= transaction.category %></td>
+                                    <td>₱<%= transaction.amount %></td>
+                                    <td>
+                                        <%= new Date(transaction.transaction_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+                                    </td>
+                                    <td>
+                                        <form action="/home/deleteTransaction?_method=DELETE" method="POST">
+                                            <input type="hidden" name="trans_id" value="<%= transaction.trans_id %>">
+                                            <button type="submit" class="delete-btn">🗑️</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            
+        
+        <hr>
+
+        <!-- Add Income Form -->
+        <div class="form-box">
+            <h3>Add Income</h3>
+            <form action="/home/addTransaction" method="POST">
+                <label for="amount-income">Amount</label>
+                <input type="number" name="amount" id="amount-income" placeholder="e.g. 4000" required>
+
+                <label for="inc-category">Category</label>
+                <select name="category" id="inc-category">
+                    <option value="Salary">Salary</option>
+                    <option value="Allowance">Allowance</option>
+                    <option value="Side Hustle">Side Hustle</option>
+                </select>
+
+                <input type="hidden" name="transtype" value="income">
+                <button type="submit" class="btn add-income">Add Income</button>
+            </form>
+        </div>
+
+        <hr>
+
+        <!-- Add Expense Form -->
+        <div class="form-box">
+            <h3>Add Expense</h3>
+            <form action="/home/addTransaction" method="POST">
+                <label for="amount-expense">Amount</label>
+                <input type="number" name="amount" id="amount-expense" placeholder="e.g. 4000" required>
+
+                <label for="exp-category">Category</label>
+                <select name="category" id="exp-category">
+                    <option value="Food">Food</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Entertainment">Entertainment</option>
+                </select>
+
+                <input type="hidden" name="transtype" value="expense">
+                <button type="submit" class="btn add-expense">Add Expense</button>
+            </form>
+        </div>
+
+        <!-- Logout Button -->
+        <form action="/logout?_method=DELETE" method="POST">
+            <button type="submit" class="btn logout">Logout</button>
+        </form>
+    </div>
+
+    
+    <script>
+        // Hide error message after 2 seconds
+        setTimeout(() => {
+            const errorMsg = document.getElementById("error-msg");
+            if (errorMsg) {
+                errorMsg.style.opacity = "0";
+                setTimeout(() => errorMsg.style.display = "none", 500);
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
